@@ -25,8 +25,12 @@ public class TaxService {
             orderLine.setTaxRate(baseTax);
             applyTaxRate(orderLine);
         }
-        shoppingCart.setSalesTaxes(shoppingCart.getOrderlines().stream().mapToDouble(OrderLine::getAppliedTaxes).sum());
-        shoppingCart.setTotalPrice(shoppingCart.getOrderlines().stream().mapToDouble(OrderLine::getBasePrice).sum()+shoppingCart.getSalesTaxes());
+        Double salesTaxes = shoppingCart.getOrderlines().stream().mapToDouble(OrderLine::getAppliedTaxes).sum();
+        shoppingCart.setSalesTaxes(PriceUtil.round2Decimal(salesTaxes));
+
+
+        Double totalPrice = shoppingCart.getOrderlines().stream().mapToDouble(OrderLine::getBasePrice).sum()+shoppingCart.getSalesTaxes();
+        shoppingCart.setTotalPrice(PriceUtil.round2Decimal(totalPrice));
     }
 
     void applyTaxRate(OrderLine orderLine) {
@@ -34,6 +38,6 @@ public class TaxService {
         if(isNull(orderLine.getBasePrice()) || isNull(orderLine.getTaxRate())){
             throw new IllegalStateException("base price and tax rate must have value");
         }
-        orderLine.setAppliedTaxes(PriceUtil.truncate2Decimal(orderLine.getBasePrice()*orderLine.getTaxRate()/100));
+        orderLine.setAppliedTaxes(PriceUtil.roundUp(orderLine.getBasePrice()*orderLine.getTaxRate()/100));
     }
 }
