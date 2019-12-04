@@ -1,0 +1,10 @@
+Travis CI
+
+poner interfaces y por que
+
+constsntes y priceUtil
+
+
+imprimir resultado
+
+calcular los precios totales en los artículos hacer los asserts en los tests
