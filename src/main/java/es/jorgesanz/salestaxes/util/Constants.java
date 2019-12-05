@@ -9,6 +9,7 @@ public class Constants {
     public static final String BOTTLE_OF_PERFUME = "005";
     public static final String PACKET_OF_HEADACHE_PILLS = "006";
 
+    public static final double NO_TAX = 0d;
     public static final double BASIC_TAX = 10d;
     public static final double IMPORTED_GOOD_TAX = 5d;
 }
