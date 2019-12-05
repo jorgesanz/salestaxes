@@ -33,9 +33,9 @@ public class TaxServiceImplTest {
     @Test
     public void input1Ok(){
 
-        OrderLine book = OrderLine.builder().basePrice(12.49).productCategory(BOOK).quantity(1).build();
-        OrderLine musicCd = OrderLine.builder().basePrice(14.99).productCategory(MUSIC_CD).quantity(1).build();
-        OrderLine chocolateBar = OrderLine.builder().basePrice(0.85).productCategory(CHOCOLATE_BAR).quantity(1).build();
+        OrderLine book = OrderLine.builder().basePrice(12.49).product(BOOK).quantity(1).build();
+        OrderLine musicCd = OrderLine.builder().basePrice(14.99).product(MUSIC_CD).quantity(1).build();
+        OrderLine chocolateBar = OrderLine.builder().basePrice(0.85).product(CHOCOLATE_BAR).quantity(1).build();
 
         List<OrderLine> orderLines = new ArrayList<>(Arrays.asList(book,musicCd,chocolateBar));
         ShoppingCart shoppingCart = ShoppingCart.builder().orderlines(orderLines).build();
@@ -49,8 +49,8 @@ public class TaxServiceImplTest {
     @Test
     public void input2Ok(){
 
-        OrderLine importedBoxOfChocolates = OrderLine.builder().basePrice(10.00).productCategory(BOX_OF_CHOCOLATES).imported(true).quantity(1).build();
-        OrderLine importedBottleOfPerfume = OrderLine.builder().basePrice(47.50).productCategory(BOTTLE_OF_PERFUME).imported(true).quantity(1).build();
+        OrderLine importedBoxOfChocolates = OrderLine.builder().basePrice(10.00).product(BOX_OF_CHOCOLATES).imported(true).quantity(1).build();
+        OrderLine importedBottleOfPerfume = OrderLine.builder().basePrice(47.50).product(BOTTLE_OF_PERFUME).imported(true).quantity(1).build();
 
         List<OrderLine> orderLines = new ArrayList<>(Arrays.asList(importedBoxOfChocolates,importedBottleOfPerfume));
         ShoppingCart shoppingCart = ShoppingCart.builder().orderlines(orderLines).build();
@@ -64,12 +64,12 @@ public class TaxServiceImplTest {
     @Test
     public void input3Ok(){
 
-        OrderLine importedBottleOfPerfume = OrderLine.builder().basePrice(27.99).productCategory(BOTTLE_OF_PERFUME).imported(true).quantity(1).build();
-        OrderLine bottleOfPerfume = OrderLine.builder().basePrice(18.99).productCategory(BOTTLE_OF_PERFUME).quantity(1).build();
-        OrderLine packetOfheadachePills = OrderLine.builder().basePrice(9.75).productCategory(PACKET_OF_HEADACHE_PILLS).quantity(1).build();
-        OrderLine importedBoxOfChocolates = OrderLine.builder().basePrice(11.25).productCategory(BOX_OF_CHOCOLATES).imported(true).quantity(1).build();
+        OrderLine importedBottleOfPerfume = OrderLine.builder().basePrice(27.99).product(BOTTLE_OF_PERFUME).imported(true).quantity(1).build();
+        OrderLine bottleOfPerfume = OrderLine.builder().basePrice(18.99).product(BOTTLE_OF_PERFUME).quantity(1).build();
+        OrderLine packetOfHeadachePills = OrderLine.builder().basePrice(9.75).product(PACKET_OF_HEADACHE_PILLS).quantity(1).build();
+        OrderLine importedBoxOfChocolates = OrderLine.builder().basePrice(11.25).product(BOX_OF_CHOCOLATES).imported(true).quantity(1).build();
 
-        List<OrderLine> orderLines = new ArrayList<>(Arrays.asList(importedBoxOfChocolates, bottleOfPerfume, packetOfheadachePills, importedBottleOfPerfume));
+        List<OrderLine> orderLines = new ArrayList<>(Arrays.asList(importedBottleOfPerfume, bottleOfPerfume, packetOfHeadachePills, importedBoxOfChocolates));
         ShoppingCart shoppingCart = ShoppingCart.builder().orderlines(orderLines).build();
 
         taxService.applyTaxes(shoppingCart);
@@ -101,8 +101,8 @@ public class TaxServiceImplTest {
 
     @Test
     public void processOrderLinesOk(){
-        OrderLine orderLine1 = OrderLine.builder().basePrice(10d).productCategory(CHOCOLATE_BAR).build();
-        OrderLine orderLine2 = OrderLine.builder().basePrice(15d).productCategory(BOOK).imported(true).build();
+        OrderLine orderLine1 = OrderLine.builder().basePrice(10d).product(CHOCOLATE_BAR).build();
+        OrderLine orderLine2 = OrderLine.builder().basePrice(15d).product(BOOK).imported(true).build();
         List<OrderLine> orderLines = new ArrayList<>(Arrays.asList(orderLine1,orderLine2));
         ShoppingCart shoppingCart = ShoppingCart.builder().orderlines(orderLines).build();
         taxService.processOrderLines(shoppingCart);
@@ -114,25 +114,25 @@ public class TaxServiceImplTest {
 
     @Test
     public void obtainTaxRateOkNoTax(){
-        OrderLine orderLine = OrderLine.builder().productCategory(BOOK).build();
+        OrderLine orderLine = OrderLine.builder().product(BOOK).build();
         assertEquals(new Double(NO_TAX), taxService.obtainTaxRate(orderLine));
     }
 
     @Test
     public void obtainTaxRateOkImportedTax(){
-        OrderLine orderLine = OrderLine.builder().productCategory(BOOK).imported(true).build();
+        OrderLine orderLine = OrderLine.builder().product(BOOK).imported(true).build();
         assertEquals(new Double(IMPORTED_GOOD_TAX), taxService.obtainTaxRate(orderLine));
     }
 
     @Test
     public void obtainTaxRateOkBasicTax(){
-        OrderLine orderLine = OrderLine.builder().productCategory(BOTTLE_OF_PERFUME).build();
+        OrderLine orderLine = OrderLine.builder().product(BOTTLE_OF_PERFUME).build();
         assertEquals(new Double(BASIC_TAX), taxService.obtainTaxRate(orderLine));
     }
 
     @Test
     public void obtainTaxRateOkBasicAndImportedTax(){
-        OrderLine orderLine = OrderLine.builder().productCategory(BOTTLE_OF_PERFUME).imported(true).build();
+        OrderLine orderLine = OrderLine.builder().product(BOTTLE_OF_PERFUME).imported(true).build();
         assertEquals(new Double(IMPORTED_GOOD_TAX + BASIC_TAX), taxService.obtainTaxRate(orderLine));
     }
 

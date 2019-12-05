@@ -28,6 +28,7 @@ public class TaxServiceImpl implements TaxService{
     public void applyTaxes(ShoppingCart shoppingCart) {
         processOrderLines(shoppingCart);
         processTotalAmounts(shoppingCart);
+        printShoppingCart(shoppingCart);
     }
 
     private void processTotalAmounts(ShoppingCart shoppingCart) {
@@ -53,7 +54,7 @@ public class TaxServiceImpl implements TaxService{
     }
 
     Double obtainTaxRate(OrderLine orderLine) {
-        Double baseTax = taxRepository.find(orderLine.getProductCategory());
+        Double baseTax = taxRepository.find(orderLine.getProduct());
         Double importedTax = obtainImportedTax(orderLine);
         return baseTax + importedTax;
     }
@@ -70,5 +71,18 @@ public class TaxServiceImpl implements TaxService{
         orderLine.setTotalPrice(PriceUtil.round2Decimal(orderLine.getBasePrice()+appliedTaxes));
     }
 
+    private void printShoppingCart(ShoppingCart shoppingCart) {
+        shoppingCart.getOrderlines().stream().map(TaxServiceImpl::obtainOrderLineString).forEach(System.out::println);
+        System.out.println(String.format("Sales Taxes: %s",PriceUtil.roundAndFormat2Decimal(shoppingCart.getSalesTaxes())));
+        System.out.println(String.format("Total: %s",PriceUtil.roundAndFormat2Decimal(shoppingCart.getTotalPrice())));
+    }
+
+    private static String obtainOrderLineString(OrderLine orderLine) {
+        return String.format("%s %s%s: %s",
+                orderLine.getQuantity(),
+                orderLine.isImported()?"imported ":"",
+                orderLine.getProduct(),
+                PriceUtil.roundAndFormat2Decimal(orderLine.getTotalPrice()));
+    }
 
 }

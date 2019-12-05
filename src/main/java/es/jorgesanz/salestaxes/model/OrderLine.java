@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class OrderLine {
 
-    private String productCategory;
+    private String product;
     private Integer quantity;
     private boolean imported;
     private Double basePrice;

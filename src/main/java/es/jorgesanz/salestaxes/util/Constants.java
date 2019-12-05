@@ -2,12 +2,12 @@ package es.jorgesanz.salestaxes.util;
 
 public class Constants {
 
-    public static final String BOOK = "001";
-    public static final String MUSIC_CD = "002";
-    public static final String CHOCOLATE_BAR = "003";
-    public static final String BOX_OF_CHOCOLATES = "004";
-    public static final String BOTTLE_OF_PERFUME = "005";
-    public static final String PACKET_OF_HEADACHE_PILLS = "006";
+    public static final String BOOK = "book";
+    public static final String MUSIC_CD = "music CD";
+    public static final String CHOCOLATE_BAR = "chocolate bar";
+    public static final String BOX_OF_CHOCOLATES = "box of chocolates";
+    public static final String BOTTLE_OF_PERFUME = "bottle of perfume";
+    public static final String PACKET_OF_HEADACHE_PILLS = "packet of headache pills";
 
     public static final double NO_TAX = 0d;
     public static final double BASIC_TAX = 10d;
